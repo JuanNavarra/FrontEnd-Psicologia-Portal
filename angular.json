@@ -24,9 +24,20 @@
               "src/assets"
             ],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
+              "node_modules/quill/dist/quill.core.css",
+              "node_modules/quill/dist/quill.bubble.css",
+              "node_modules/quill/dist/quill.snow.css",
+              "node_modules/ngx-toastr/toastr.css",
               "src/styles.css"
+              
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/jquery/dist/jquery.min.js",
+              "node_modules/@popperjs/core/dist/umd/popper.min.js",
+              "node_modules/bootstrap/dist/js/bootstrap.min.js",
+              "node_modules/bs-custom-file-input/dist/bs-custom-file-input.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -61,7 +72,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "psicologia-portal:build"
+            "browserTarget": "psicologia-portal:build",
+            "port": 4201
           },
           "configurations": {
             "production": {
@@ -120,5 +132,8 @@
       }
     }
   },
-  "defaultProject": "psicologia-portal"
+  "defaultProject": "psicologia-portal",
+  "cli": {
+    "analytics": false
+  }
 }
