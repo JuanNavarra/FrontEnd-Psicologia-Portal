@@ -1,0 +1,18 @@
+<div class="content-wrapper">
+    <section class="content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <button type="button" class="btn btn-info float-right d-none d-sm-inline-block"
+                            data-toggle="modal" data-target="#nuevoYoutube">
+                            Nuevo
+                        </button>
+                    </div>
+                    <listadoYoutube #listadoYoutube></listadoYoutube>
+                    <app-crear-youtube (entrada)="listadoYoutube.agregarListaPost($event)"></app-crear-youtube>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

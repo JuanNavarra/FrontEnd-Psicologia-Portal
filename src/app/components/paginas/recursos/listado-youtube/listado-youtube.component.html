@@ -1,0 +1,50 @@
+<div class="card-body p-0">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th style="width: 5px">#</th>
+                <th style="width: 13%">Slug</th>
+                <th style="width: 10%">Titulo</th>
+                <th>Descripcion</th>
+                <th style="width: 10%">Url</th>
+                <th style="width: 13%">Creador</th>
+                <th style="width: 40px">Estado</th>
+                <th style="width: 9%">Accion</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let entrada of entradas | paginate: { itemsPerPage: 5, currentPage: page } let i = index;"
+                [ngClass]="{inhabilitado: !entrada.estado}">
+                <td>{{i + 1}}</td>
+                <td>{{entrada.slug}}</td>
+                <td>{{entrada.titulo}}</td>
+                <td>{{entrada.descripcion}}</td>
+                <td><a href="{{entrada.rutaVideo}}" [ngClass]="{inhabilitado: !entrada.estado}">Ir Youtube</a></td>
+                <td>{{entrada.creador}}</td>
+                <td>
+                    <h4>
+                        <span class="badge bg-info" *ngIf="entrada.estado">ACTIVO</span>
+                        <span class="badge bg-danger" *ngIf="!entrada.estado">INACTIVO</span>
+                    </h4>
+                </td>
+                <td>
+                    <span class="btn btn-danger btn-sm" (click)="eliminarVideo(entrada.slug, $event)"
+                        title="Eliminar o inhabilitar" style="margin-right: 4px;">
+                        <fa-icon [icon]="faTrash"></fa-icon>
+                    </span>
+                    <span *ngIf="entrada.estado" class="btn btn-info btn-sm" title="Editar"
+                        (click)="mostrarVideo(entrada.slug, $event)" data-toggle="modal" data-target="#detalleVideo">
+                        <fa-icon [icon]="faEdit"></fa-icon>
+                    </span>
+                    <span *ngIf="!entrada.estado" class="btn btn-light btn-sm"
+                        (click)="habilitarVideo(entrada.slug, $event)" title="Habilitar">
+                        <fa-icon [icon]="faArrowUp"></fa-icon>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<app-video-youtube-detalle (videoEntradaEmiter)="actualizarListaPost($event)"></app-video-youtube-detalle>
+<pagination-controls (pageChange)="page = $event" responsive="true" previousLabel="Anterior" nextLabel="Siguiente">
+</pagination-controls>

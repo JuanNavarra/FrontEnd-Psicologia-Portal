@@ -30,7 +30,7 @@ export class DataService {
       });
   }
 
-  put<T>(url: string, data: any): Observable<HttpResponse<T>> {
+  put<T>(url: string, data?: any): Observable<HttpResponse<T>> {
     const httpHeaders: HttpHeaders = this.getHeaders();
     return this.http.put<T>(url, data,
       {

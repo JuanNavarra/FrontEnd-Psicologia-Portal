@@ -1,0 +1,157 @@
+<div class="modal fade" id="nuevoPost" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Creación de un post</h3>
+                </div>
+                <form novalidate [formGroup]="formEntrada" (ngSubmit)="guardarEntrada($event)">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Slug<small><br>Debe ser único. Contener letras guión
+                                            medio o números</small></label>
+                                    <input type="text" class="form-control" placeholder="ej: psico-deporte-1"
+                                        formControlName="slug">
+                                    <div *ngIf="formEntrada.get('slug').errors && formEntrada.get('slug').touched">
+                                        <p *ngIf="formEntrada.get('slug').hasError('required')" class="error">
+                                            Este campo es requerido.
+                                        </p>
+                                        <p *ngIf="formEntrada.get('slug').hasError('maxLength')" class="error">
+                                            Acepta maximo 12 caracteres.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Imágen <small><br>Imágen principal del post. Sólo archivos png y
+                                            jpeg</small></label>
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" (change)="uploadFile($event.target.files)"
+                                                formControlName="ImagenPostFile" class="custom-file-input">
+                                            <label class="custom-file-label" #labelImport for="ImagenPostFile"><i
+                                                    class="fas fa-search"></i>ej:
+                                                imagen1.png</label>
+                                        </div>
+                                    </div>
+                                    <div
+                                        *ngIf="formEntrada.get('ImagenPostFile').errors && formEntrada.get('ImagenPostFile').touched">
+                                        <p *ngIf="formEntrada.get('ImagenPostFile').hasError('required')" class="error">
+                                            Este campo es requerido.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Título <small><br>El titulo debe ser descriptivo al
+                                            post</small></label>
+                                    <input type="text" class="form-control" formControlName="titulo">
+                                    <div *ngIf="formEntrada.get('titulo').errors && formEntrada.get('titulo').touched">
+                                        <p *ngIf="formEntrada.get('titulo').hasError('required')" class="error">
+                                            Este campo es requerido.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Sub Título <small><br>Este texto se vera reflejado en el listado de
+                                            entradas</small></label>
+                                    <input type="text" class="form-control" formControlName="subTitulo">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" formControlName="citaCheck"
+                                        (change)="onCheckCita()">
+                                    <label class="form-check-label">Check para citar</label>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>¿A quien citas? <small><br>Escribe el nombre de la
+                                            persona</small></label>
+                                    <input type="text" class="form-control" formControlName="autorCita" [readOnly]="read">
+                                    <div
+                                        *ngIf="formEntrada.get('autorCita').errors && formEntrada.get('autorCita').touched && formEntrada.get('citaCheck').value">
+                                        <p *ngIf="formEntrada.get('autorCita').hasError('required')" class="error">
+                                            Este campo es requerido.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Cita <small><br>No hay limite de caracteres pero se
+                                            breve</small></label>
+                                    <input type="text" class="form-control" formControlName="cita" [readOnly]="read">
+                                    <div
+                                        *ngIf="formEntrada.get('cita').errors && formEntrada.get('cita').touched && formEntrada.get('citaCheck').value">
+                                        <p *ngIf="formEntrada.get('cita').hasError('required')" class="error">
+                                            Este campo es requerido.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label>Categoría <small><br>Elige una categoría</small></label>
+                                    <select class="form-control" formControlName="idcategoria">
+                                        <option value="null">Selecciona</option>
+                                        <option *ngFor="let i of categorias" value="{{i.id}}">{{i.nombre}}
+                                        </option>
+                                    </select>
+                                    <div *ngIf="formEntrada.get('idcategoria').errors && formEntrada.get('idcategoria').touched">
+                                        <p *ngIf="formEntrada.get('idcategoria').hasError('required')" class="error">
+                                            Este campo es requerido.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-7">
+                                <div class="form-group">
+                                    <label>Palabras claves <small><br>Sirven para las busquedas, un post puede
+                                            tener mas de una.</small></label>
+                                    <ng-multiselect-dropdown [placeholder]="'Selecciona'" [data]="keys" formControlName="keyWords"
+                                        [settings]="dropdownSettings">
+                                    </ng-multiselect-dropdown>
+                                    <div *ngIf="formEntrada.get('keyWords').errors && formEntrada.get('keyWords').touched">
+                                        <p *ngIf="formEntrada.get('keyWords').hasError('required')" class="error">
+                                            Este campo es requerido.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <quill-editor formControlName="descripcion" [placeholder]="'Empieza a redactar'">
+                                    </quill-editor>
+                                    <div *ngIf="formEntrada.get('descripcion').errors && formEntrada.get('descripcion').touched">
+                                        <p *ngIf="formEntrada.get('descripcion').hasError('required')" class="error">
+                                            Este campo es requerido.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Guardar Post</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

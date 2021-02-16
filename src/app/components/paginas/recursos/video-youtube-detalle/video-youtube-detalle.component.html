@@ -1,0 +1,95 @@
+<div class="modal fade" id="detalleVideo" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Montar un video de Youtube</h3>
+                </div>
+                <form novalidate [formGroup]="formEntrada" (ngSubmit)="actualizarVideo($event)">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Slug<small><br>Debe ser único. Contener letras guión
+                                            medio o números</small></label>
+                                    <input [attr.disabled]="true" type="text" class="form-control"
+                                        placeholder="ej: psico-deporte-1" formControlName="slug"
+                                        [value]="entradaYoutube.slug">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Url<small><br>Copia toda la url del video que vas a encrustar</small></label>
+                                    <input [attr.disabled]="habilitar? true : null" type="text" class="form-control"
+                                        placeholder="ej: https://www.youtube.com/watch?v=Io2hbcrAYBw&ab_channel=twentyonepilots"
+                                        formControlName="rutaVideo" [value]="entradaYoutube.rutaVideo" id="rutaVideo">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Titulo<small><br>El titulo debe ser descriptivo al
+                                            Youtube</small></label>
+                                    <input [attr.disabled]="habilitar? true : null" type="text" class="form-control"
+                                        formControlName="titulo" [value]="entradaYoutube.titulo" id="titulo">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Categorias<small><br>Elige una categoria</small></label>
+                                    <select class="form-control" *ngIf="habilitar"
+                                        [attr.disabled]="habilitar? true : null">
+                                        <option>{{entradaYoutube.categoria}}
+                                        </option>
+                                    </select>
+                                    <select class="form-control" *ngIf="!habilitar" formControlName="idcategoria"
+                                        id="idcategoria">
+                                        <option value="null">Seleccione</option>
+                                        <option *ngFor="let c of categorias" value="{{c.id}}">{{c.nombre}}</option>>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Descripción<small><br>Maximo 200 caracteres</small></label>
+                                    <textarea [attr.disabled]="habilitar? true : null" rows="4" type="text"
+                                        class="form-control" id="descripcion" formControlName="descripcion"
+                                        [value]="entradaYoutube.descripcion"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Palabras claves <small><br>Sirven para las busquedas, un post puede
+                                            tener mas de una.</small></label>
+                                    <ng-multiselect-dropdown [placeholder]="'Selecciona'" [settings]="dropdownSettings"
+                                        [ngModelOptions]="{standalone: true}" [disabled]="true"
+                                        [(ngModel)]="entradaYoutube.keyWords" *ngIf="habilitar">
+                                    </ng-multiselect-dropdown>
+                                    <ng-multiselect-dropdown [placeholder]="'Selecciona'" [settings]="dropdownSettings"
+                                        [(ngModel)]="entradaYoutube.keyWords" [data]="keys" *ngIf="!habilitar"
+                                        formControlName="keyWords" id="keywords">
+                                    </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-3">
+                                <button type="submit" class="btn btn-primary" [attr.disabled]="habilitar? true : null">Actualizar
+                                    video</button>
+                            </div>
+                            <div class="col-4">
+                                <input type="checkbox" style="height: 30px !important;width: 30px !important;"
+                                    checked="checked" (change)="habilitarDatos($event)"> Check para habilitar
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
