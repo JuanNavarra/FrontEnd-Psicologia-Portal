@@ -49,7 +49,6 @@ export class CrearPodcastComponent implements OnInit {
     private securityService: SecurityService
   ) {
     this.builderForm();
-    this.castToNumber(this.formEntrada.get('idcategoria'));
   }
 
   ngOnInit(): void {
@@ -122,6 +121,9 @@ export class CrearPodcastComponent implements OnInit {
     this.formEntrada
       .get('creador')
       .setValue(this.securityService.getDecodedAccessToken().User);
+    this.formEntrada
+      .get('idcategoria')
+      .setValue(parseInt(this.formEntrada.value.idcategoria));
     if (this.formEntrada.valid) {
       var formData: FormData = new FormData();
       formData.append('audio', event.target[1].files[0]);
@@ -130,6 +132,8 @@ export class CrearPodcastComponent implements OnInit {
         .subscribe(
           (data) => {
             if (data.status == 200 || data.status == 201) {
+              console.log(this.formEntrada.value);
+              console.log(data.body.toString());
               this.subscription$ = this.podcastService
                 .guardarPodcast(this.formEntrada.value, data.body.toString())
                 .subscribe(
@@ -151,6 +155,7 @@ export class CrearPodcastComponent implements OnInit {
                       categoriaId: null,
                     };
                     this.entrada.emit(entrada);
+                    this.labelImport.nativeElement.innerText = '';
                     this.formEntrada.reset();
                   },
                   (err) => {
@@ -175,16 +180,6 @@ export class CrearPodcastComponent implements OnInit {
       this.toast.error('Hay validaciones del formulario');
       this.formEntrada.markAllAsTouched();
     }
-  }
-
-  /**
-   * Castea un objeto del formgroup
-   * @param data
-   */
-  private castToNumber(data: AbstractControl): void {
-    data.valueChanges
-      .pipe(distinct())
-      .subscribe((value) => data.setValue(+value || 0));
   }
 
   /**

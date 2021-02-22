@@ -48,7 +48,6 @@ export class CrearPostComponent implements OnInit, OnDestroy {
     private securityService: SecurityService
   ) {
     this.builderForm();
-    this.castToNumber(this.formEntrada.get('idcategoria'));
   }
 
   ngOnInit(): void {
@@ -142,6 +141,9 @@ export class CrearPostComponent implements OnInit, OnDestroy {
     this.formEntrada
       .get('creador')
       .setValue(this.securityService.getDecodedAccessToken().User);
+    this.formEntrada
+      .get('idcategoria')
+      .setValue(parseInt(this.formEntrada.value.idcategoria));
     if (this.formEntrada.valid) {
       this.subscription$ = this.blogService
         .guardarImagePost(formData)
@@ -164,6 +166,7 @@ export class CrearPostComponent implements OnInit, OnDestroy {
                     };
                     this.entrada.emit(entrada);
                     this.formEntrada.reset();
+                    this.labelImport.nativeElement.innerText = '';
                   },
                   (err) => {
                     if (err.status === 401) {

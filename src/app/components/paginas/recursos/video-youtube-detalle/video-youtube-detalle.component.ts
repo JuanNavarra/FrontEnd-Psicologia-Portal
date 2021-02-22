@@ -75,17 +75,6 @@ export class VideoYoutubeDetalleComponent implements OnInit, OnDestroy {
       allowSearchFilter: true,
     };
     this.builderForm();
-    this.castToNumber(this.formEntrada.get('idcategoria'));
-  }
-
-  /**
-   * Castea un objeto del formgroup
-   * @param data
-   */
-  private castToNumber(data: AbstractControl) {
-    data.valueChanges
-      .pipe(distinct())
-      .subscribe((value) => data.setValue(+value || 0));
   }
 
   /**
@@ -131,6 +120,9 @@ export class VideoYoutubeDetalleComponent implements OnInit, OnDestroy {
       this.formEntrada
         .get('creador')
         .setValue(this.securityService.getDecodedAccessToken().User);
+      this.formEntrada
+        .get('idcategoria')
+        .setValue(parseInt(this.formEntrada.value.idcategoria));
       this.formEntrada.get('slug').setValue(this.entradaYoutube.slug);
       this.subscription$ = this.youtubeService
         .actualizarEntradaYoutube(this.formEntrada.value)

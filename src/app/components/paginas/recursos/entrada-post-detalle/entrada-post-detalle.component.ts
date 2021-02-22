@@ -51,7 +51,6 @@ export class EntradaPostDetalleComponent implements OnInit {
     private toast: ToastrService
   ) {
     this.builderForm();
-    this.castToNumber(this.formEntrada.get('idcategoria'));
     this.entrada = {
       slug: null,
       titulo: null,
@@ -172,16 +171,6 @@ export class EntradaPostDetalleComponent implements OnInit {
   }
 
   /**
-   * Castea un objeto del formgroup a un entero
-   * @param data
-   */
-  private castToNumber(data: AbstractControl): void {
-    data.valueChanges
-      .pipe(distinct())
-      .subscribe((value) => data.setValue(+value || 0));
-  }
-
-  /**
    * Metodo usado para actualizar un post de una entrada
    * y a su vez emite un mensaje para que se puedea listar en otro componente
    * @param $event
@@ -196,6 +185,9 @@ export class EntradaPostDetalleComponent implements OnInit {
       this.formEntrada
         .get('creador')
         .setValue(this.securityService.getDecodedAccessToken().User);
+      this.formEntrada
+        .get('idcategoria')
+        .setValue(parseInt(this.formEntrada.value.idcategoria));
       this.formEntrada.get('slug').setValue(this.entrada.slug);
       var formData: FormData = new FormData();
       formData.append('image', $event.target[1].files[0]);

@@ -44,7 +44,6 @@ export class CrearYoutubeComponent implements OnInit, OnDestroy {
     private toast: ToastrService
   ) {
     this.builderForm();
-    this.castToNumber(this.formEntrada.get('idcategoria'));
   }
 
   ngOnInit(): void {
@@ -100,6 +99,10 @@ export class CrearYoutubeComponent implements OnInit, OnDestroy {
     this.formEntrada
       .get('creador')
       .setValue(this.securityService.getDecodedAccessToken().User);
+    this.formEntrada.get('estado').setValue(true);
+    this.formEntrada
+    .get('idcategoria')
+    .setValue(parseInt(this.formEntrada.value.idcategoria));
     if (this.formEntrada.valid) {
       this.subscription$ = this.youtubeService
         .guardarEntradaYoutube(this.formEntrada.value)
@@ -131,7 +134,7 @@ export class CrearYoutubeComponent implements OnInit, OnDestroy {
           }
         );
     } else {
-      this.toast.error('error');
+      this.toast.error('faltan rellenar campos');
       this.formEntrada.markAllAsTouched();
     }
   }

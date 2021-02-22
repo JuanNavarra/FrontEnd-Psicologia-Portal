@@ -81,17 +81,6 @@ export class PodcastDetalleComponent implements OnInit {
     };
 
     this.builderForm();
-    this.castToNumber(this.formEntrada.get('categoriaId'));
-  }
-
-  /**
-   * Castea un objeto del formgroup
-   * @param data
-   */
-  private castToNumber(data: AbstractControl) {
-    data.valueChanges
-      .pipe(distinct())
-      .subscribe((value) => data.setValue(+value || 0));
   }
 
   /**
@@ -148,6 +137,9 @@ export class PodcastDetalleComponent implements OnInit {
       this.formEntrada
         .get('creador')
         .setValue(this.securityService.getDecodedAccessToken().User);
+      this.formEntrada
+        .get('idcategoria')
+        .setValue(parseInt(this.formEntrada.value.idcategoria));
       this.formEntrada.get('slug').setValue(this.entradaPodcast.slug);
       var formData: FormData = new FormData();
       formData.append('audio', $event.target[1].files[0]);

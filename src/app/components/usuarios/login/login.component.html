@@ -17,6 +17,11 @@
                             </div>
                         </div>
                     </div>
+                    <div *ngIf="formLogin.get('email').errors && formLogin.get('email').touched">
+                        <p *ngIf="formLogin.get('email').hasError('required')" class="error">
+                            Este campo es requerido.
+                        </p>
+                    </div>
                     <div class="input-group mb-3">
                         <input type="password" class="form-control" placeholder="Contraseña" formControlName="pass">
                         <div class="input-group-append">
@@ -24,6 +29,11 @@
                                 <span class="fas fa-lock"></span>
                             </div>
                         </div>
+                    </div>
+                    <div *ngIf="formLogin.get('pass').errors && formLogin.get('pass').touched">
+                        <p *ngIf="formLogin.get('pass').hasError('required')" class="error">
+                            Este campo es requerido.
+                        </p>
                     </div>
                     <div class="row">
                         <div class="col-8">
