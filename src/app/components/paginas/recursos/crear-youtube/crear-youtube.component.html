@@ -26,7 +26,7 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <div class="form-group">
                                     <label>Categoría <small><br>Elige una categoría</small></label>
                                     <select class="form-control" formControlName="idcategoria">
@@ -35,6 +35,10 @@
                                         </option>
                                     </select>
                                 </div>
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" class="btn btn-info" style="margin-top: 54px;" data-toggle="modal"
+                                    data-target="#nuevaCategoria">+</button>
                             </div>
                             <div class="col-md-6">
                                 <div class="form-group">
@@ -51,7 +55,7 @@
                                     <textarea rows="4" type="text" class="form-control" formControlName="descripcion"></textarea>
                                 </div>
                             </div>
-                            <div class="col-6">
+                            <div class="col-5">
                                 <div class="form-group">
                                     <label>Palabras claves <small><br>Sirven para las busquedas, un post puede
                                             tener mas de una.</small></label>
@@ -59,6 +63,10 @@
                                         [settings]="dropdownSettings">
                                     </ng-multiselect-dropdown>
                                 </div>
+                            </div>
+                            <div class="col-md-1">
+                                <button type="button" class="btn btn-info" style="margin-top:80px;" data-toggle="modal"
+                                    data-target="#nuevaKeys">+</button>
                             </div>
                         </div>
                     </div>
@@ -70,3 +78,5 @@
         </div>
     </div>
 </div>
+<app-crear-categoria (categoriaEmitter)="cargarNuevasCategorias($event)"
+    (keyWordEmitter)="cargarNuevasKeyWords($event)"></app-crear-categoria>

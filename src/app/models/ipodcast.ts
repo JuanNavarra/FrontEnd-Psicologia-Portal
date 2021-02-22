@@ -1,20 +1,17 @@
 import { KeyWords } from "./key-words";
 
-export interface IEntrada {
+export interface IPodcast {
     slug: string;
     titulo: string;
-    subTitulo: string;
+    subtitulo: string;
     descripcion: string;
-    cita: string;
-    autorCita: string;
-    fechaCreacion: Date;
+    fechacreacion: Date;
     creador: string;
-    idcategoria: number,
+    categoria: string;
     imagenCreador: string;
-    imagenPost: string;
+    rutaaudio: string;
     keyWords: KeyWords[];
     idBlog: number;
-    ImagenPostFile: File;
-    categoria: string;
     estado: boolean;
+    categoriaId: number;
 }

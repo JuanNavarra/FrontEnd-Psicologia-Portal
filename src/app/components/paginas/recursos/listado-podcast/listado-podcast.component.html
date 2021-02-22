@@ -2,26 +2,25 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th style="width: 5px">#</th>
-                <th style="width: 13%">Slug</th>
-                <th>Titulo</th>
-                <th style="width: 13%">Imagen</th>
-                <th style="width: 13%">Creador</th>
-                <th style="width: 40px">Estado</th>
+                <th style="width: 3%">#</th>
+                <th style="width: 10%">Slug</th>
+                <th style="width: 13%">Titulo</th>
+                <th style="width: 20%;text-align: center;" >Audio</th>
+                <th style="width: 15%;">Creador</th>
+                <th style="width: 10%">Estado</th>
                 <th style="width: 9%">Accion</th>
             </tr>
         </thead>
         <tbody>
             <tr *ngFor="let entrada of entradas | paginate: { itemsPerPage: 5, currentPage: page } let i = index;"
-                [ngClass]="{inhabilitado: !entrada.estado}">
+            [ngClass]="{inhabilitado: !entrada.estado}">
                 <td>{{i + 1}}</td>
                 <td>{{entrada.slug}}</td>
                 <td>{{entrada.titulo}}</td>
                 <td>
-                    <img 
-                        *ngIf="entrada.imagenPost != null" 
-                        [src]="createImgPath(entrada.imagenPost)"
-                        class="img-fluid">
+                    <audio controls>
+                        <source [src]="createAudioPath(entrada.rutaaudio)"  type="audio/mpeg">
+                    </audio>
                 </td>
                 <td>{{entrada.creador}}</td>
                 <td>
@@ -31,16 +30,16 @@
                     </h4>
                 </td>
                 <td>
-                    <span class="btn btn-danger btn-sm" (click)="eliminarPost(entrada.slug, $event)"
+                    <span class="btn btn-danger btn-sm" (click)="eliminarPodcast(entrada.slug, $event)"
                         title="Eliminar o inhabilitar" style="margin-right: 4px;">
                         <fa-icon [icon]="faTrash"></fa-icon>
                     </span>
                     <span *ngIf="entrada.estado" class="btn btn-info btn-sm" title="Editar"
-                        (click)="mostrarPost(entrada.slug, $event)" data-toggle="modal" data-target="#detallePost">
+                        (click)="mostrarPodcast(entrada.slug, $event)" data-toggle="modal" data-target="#detallePodcast">
                         <fa-icon [icon]="faEdit"></fa-icon>
                     </span>
                     <span *ngIf="!entrada.estado" class="btn btn-light btn-sm"
-                        (click)="habilitarPost(entrada.slug, $event)" title="Habilitar">
+                        (click)="habilitarPodcast(entrada.slug, $event)" title="Habilitar">
                         <fa-icon [icon]="faArrowUp"></fa-icon>
                     </span>
                 </td>
@@ -48,7 +47,7 @@
         </tbody>
     </table>
 </div>
-<app-entrada-post-detalle (postEntradaEmiter)="actualizarListaPost($event)"></app-entrada-post-detalle>
+<app-podcast-detalle (podcastEntradaEmiter)="actualizarListaPost($event)"></app-podcast-detalle>
 <pagination-controls (pageChange)="page = $event" responsive="true" previousLabel="Anterior"
     nextLabel="Siguiente">
 </pagination-controls>

@@ -1,0 +1,59 @@
+<div class="modal fade" id="nuevaCategoria" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Crear nueva categoria</h3>
+                </div>
+                <form novalidate>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Nombre categoria<small><br>Se reflejara automaticamente en las
+                                            categorias</small></label>
+                                    <input type="text" class="form-control" placeholder="ej: psicologia"
+                                        [formControl]="categoriaForm">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" (click)="guardarCategoria($event)"
+                            class="btn btn-primary btn-block">Guardar categoria</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="nuevaKeys" role="dialog">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Crear nueva palabra clave</h3>
+                </div>
+                <form novalidate>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Nombre palabra clave<small><br>Se reflejara automaticamente en las palabras
+                                            claves</small></label>
+                                    <input type="text" class="form-control" placeholder="ej: comportamiento"
+                                        [formControl]="keyForm">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="button" (click)="guardarKey($event)"
+                            class="btn btn-primary btn-block">Guardar palabra clave</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

@@ -24,6 +24,12 @@ import { ListadoYoutubeComponent } from './components/paginas/recursos/listado-y
 import { CrearYoutubeComponent } from './components/paginas/recursos/crear-youtube/crear-youtube.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { VideoYoutubeDetalleComponent } from './components/paginas/recursos/video-youtube-detalle/video-youtube-detalle.component';
+import { EntradaPostDetalleComponent } from './components/paginas/recursos/entrada-post-detalle/entrada-post-detalle.component';
+import { PodcastPsicologiaComponent } from './components/paginas/recursos/podcast-psicologia/podcast-psicologia.component';
+import { ListadoPodcastComponent } from './components/paginas/recursos/listado-podcast/listado-podcast.component';
+import { CrearPodcastComponent } from './components/paginas/recursos/crear-podcast/crear-podcast.component';
+import { PodcastDetalleComponent } from './components/paginas/recursos/podcast-detalle/podcast-detalle.component';
+import { CrearCategoriaComponent } from './components/paginas/recursos/crear-categoria/crear-categoria.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +47,12 @@ import { VideoYoutubeDetalleComponent } from './components/paginas/recursos/vide
     ListadoYoutubeComponent,
     CrearYoutubeComponent,
     VideoYoutubeDetalleComponent,
+    EntradaPostDetalleComponent,
+    PodcastPsicologiaComponent,
+    ListadoPodcastComponent,
+    CrearPodcastComponent,
+    PodcastDetalleComponent,
+    CrearCategoriaComponent,
   ],
   imports: [
     BrowserModule,

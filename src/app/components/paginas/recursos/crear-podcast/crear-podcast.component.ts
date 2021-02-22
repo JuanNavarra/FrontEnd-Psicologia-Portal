@@ -2,7 +2,6 @@ import {
   Component,
   ElementRef,
   EventEmitter,
-  OnDestroy,
   OnInit,
   Output,
   ViewChild,
@@ -13,38 +12,40 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
+import { distinct } from 'rxjs/operators';
 import { Categorias } from 'src/app/models/categorias';
+import { IPodcast } from 'src/app/models/ipodcast';
 import { KeyWords } from 'src/app/models/key-words';
 import { BlogService } from 'src/app/services/paginas/blog.service';
-import { ToastrService } from 'ngx-toastr';
+import { PodcastService } from 'src/app/services/paginas/podcast.service';
 import { SecurityService } from 'src/app/services/security.service';
-import { distinct } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
-import { IListEntrada } from 'src/app/models/ilist-entrada';
-import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-crear-post',
-  templateUrl: './crear-post.component.html',
-  styleUrls: ['./crear-post.component.css'],
+  selector: 'app-crear-podcast',
+  templateUrl: './crear-podcast.component.html',
+  styleUrls: ['./crear-podcast.component.css'],
 })
-export class CrearPostComponent implements OnInit, OnDestroy {
+export class CrearPodcastComponent implements OnInit {
   @ViewChild('labelImport')
   labelImport: ElementRef;
+  read: boolean = true;
+  subscription$: Subscription;
   keys: KeyWords[] = [];
+  fileToUpload: File = null;
   categorias: Categorias[] = [];
   dropdownSettings: any = {};
   formEntrada: FormGroup;
-  fileToUpload: File = null;
-  subscription$: Subscription;
-  read: boolean = true;
-  @Output() entrada = new EventEmitter<IListEntrada>();
+  @Output() entrada = new EventEmitter<IPodcast>();
 
   constructor(
     private blogService: BlogService,
     private formBuilder: FormBuilder,
     private toast: ToastrService,
     private route: Router,
+    private podcastService: PodcastService,
     private securityService: SecurityService
   ) {
     this.builderForm();
@@ -90,7 +91,7 @@ export class CrearPostComponent implements OnInit, OnDestroy {
       citaCheck: [false],
       autorCita: [null],
       cita: [null],
-      ImagenPostFile: [null, [Validators.required]],
+      AudioPodcastFile: [null, [Validators.required]],
       idcategoria: [null, [Validators.required]],
       descripcion: [null, [Validators.required]],
       creador: [null, [Validators.required]],
@@ -110,31 +111,10 @@ export class CrearPostComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Cambia las validaciones para habilitar o inhabilatar las citas
-   */
-  onCheckCita(): void {
-    let check: boolean = this.formEntrada.value.citaCheck;
-    this.read = !check;
-    if (check) {
-      this.formEntrada.get('autorCita').setValidators([Validators.required]);
-      this.formEntrada.get('cita').setValidators([Validators.required]);
-    } else {
-      this.formEntrada.get('autorCita').clearValidators();
-      this.formEntrada.get('cita').clearValidators();
-      this.formEntrada.get('autorCita').reset();
-      this.formEntrada.get('cita').reset();
-    }
-    this.formEntrada.get('autorCita').updateValueAndValidity();
-    this.formEntrada.get('cita').updateValueAndValidity();
-  }
-
-  /**
-   * Guarda un post del blog de escritura y emite un mensaje para mostrarlo en la tabla
+   * Guarda un podcast del blog de escritura y emite un mensaje para mostrarlo en la tabla
    * @param event
    */
   guardarEntrada(event: { target: { files: (string | Blob)[] }[] }): void {
-    var formData: FormData = new FormData();
-    formData.append('image', event.target[1].files[0]);
     if (this.securityService.getDecodedAccessToken() == null) {
       this.securityService.logOff();
       this.route.navigate(['']);
@@ -143,24 +123,32 @@ export class CrearPostComponent implements OnInit, OnDestroy {
       .get('creador')
       .setValue(this.securityService.getDecodedAccessToken().User);
     if (this.formEntrada.valid) {
-      this.subscription$ = this.blogService
-        .guardarImagePost(formData)
+      var formData: FormData = new FormData();
+      formData.append('audio', event.target[1].files[0]);
+      this.subscription$ = this.podcastService
+        .guardarAudioPodcast(formData)
         .subscribe(
           (data) => {
             if (data.status == 200 || data.status == 201) {
-              this.subscription$ = this.blogService
-                .guardarPost(this.formEntrada.value, data.body.toString())
+              this.subscription$ = this.podcastService
+                .guardarPodcast(this.formEntrada.value, data.body.toString())
                 .subscribe(
                   () => {
                     this.toast.success('Entrada guarda con exito');
-                    const entrada: IListEntrada = {
+                    const entrada: IPodcast = {
                       slug: this.formEntrada.value.slug,
                       titulo: this.formEntrada.value.titulo,
-                      rutaVideo: null,
-                      rutaaudio: null,
+                      rutaaudio: data.body.toString(),
                       estado: true,
-                      imagenPost: data.body.toString(),
                       creador: null,
+                      descripcion: null,
+                      categoria: null,
+                      fechacreacion: null,
+                      idBlog: null,
+                      imagenCreador: null,
+                      keyWords: null,
+                      subtitulo: null,
+                      categoriaId: null,
                     };
                     this.entrada.emit(entrada);
                     this.formEntrada.reset();
@@ -184,7 +172,7 @@ export class CrearPostComponent implements OnInit, OnDestroy {
           }
         );
     } else {
-      this.toast.error('error');
+      this.toast.error('Hay validaciones del formulario');
       this.formEntrada.markAllAsTouched();
     }
   }

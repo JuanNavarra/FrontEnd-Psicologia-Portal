@@ -1,0 +1,129 @@
+<div class="modal fade" id="detallePodcast" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="card card-info">
+                <div class="card-header">
+                    <h3 class="card-title">Editar un post</h3>
+                </div>
+                <form novalidate [formGroup]="formEntrada" (ngSubmit)="actualizarEntrada($event)">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Slug<small><br>Debe ser único. Contener letras guión
+                                            medio o números</small></label>
+                                    <input 
+                                        [attr.disabled]="true" type="text" 
+                                        class="form-control"
+                                        formControlName="slug"
+                                        placeholder="ej: psico-deporte-1"
+                                        [value]="entradaPodcast.slug">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Podcast principal<small><br>audio principal del podcast. Sólo archivos mp3 y wav
+                                    </small></label>
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input 
+                                                type="file" 
+                                                [attr.disabled]="habilitar? true : null"
+                                                (change)="uploadFile($event.target.files)"
+                                                formControlName="AudioPodcastFile"
+                                                class="custom-file-input">
+                                            <label class="custom-file-label" #labelImport for="AudioPodcastFile">
+                                                <i class="fas fa-search"></i>{{entradaPodcast.rutaaudio}}</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Titulo<small><br>El titulo debe ser descriptivo al
+                                            Podcast</small></label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        formControlName="titulo"
+                                        [attr.disabled]="habilitar? true : null"
+                                        [value]="entradaPodcast.titulo">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Sub titulo<small><br>El titulo debe ser descriptivo al
+                                            Podcast</small></label>
+                                    <input 
+                                        type="text" 
+                                        class="form-control" 
+                                        formControlName="subTitulo"
+                                        [attr.disabled]="habilitar? true : null"
+                                        [value]="entradaPodcast.subtitulo">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Categorias<small><br>Elige una categoria</small></label>
+                                    <select class="form-control" *ngIf="habilitar"
+                                        [attr.disabled]="habilitar? true : null">
+                                        <option value="null">{{entradaPodcast.categoria}}</option>
+                                    </select>
+                                    <select class="form-control" *ngIf="!habilitar" id="categoriaId" formControlName="categoriaId">
+                                        <option value="null">{{entradaPodcast.categoria}}</option>
+                                        <option *ngFor="let c of categorias" value="{{c.id}}">{{c.nombre}}</option>>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <label>Palabras claves <small><br>Sirven para las busquedas, un post puede
+                                            tener mas de una.</small></label>
+                                        <ng-multiselect-dropdown [placeholder]="'Selecciona'" [settings]="dropdownSettings"
+                                            [ngModelOptions]="{standalone: true}" [disabled]="true"
+                                            [(ngModel)]="entradaPodcast.keyWords" *ngIf="habilitar">
+                                        </ng-multiselect-dropdown>
+                                        <ng-multiselect-dropdown [placeholder]="'Selecciona'" [settings]="dropdownSettings"
+                                            [(ngModel)]="entradaPodcast.keyWords" [data]="keys" *ngIf="!habilitar"
+                                            formControlName="keyWords" id="keywords">
+                                        </ng-multiselect-dropdown>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <quill-editor 
+                                        [placeholder]="'Empieza a redactar'"
+                                        [(ngModel)]="entradaPodcast.descripcion"
+                                        formControlName="descripcion"></quill-editor>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="row">
+                            <div class="col-3">
+                                <button 
+                                    type="submit" 
+                                    class="btn btn-primary"
+                                    [attr.disabled]="habilitar? true : null">Actualizar post</button>
+                            </div>
+                            <div class="col-4">
+                                <input 
+                                    type="checkbox" 
+                                    style="height: 30px !important;width: 30px !important;"
+                                    checked="checked" 
+                                    (change)="habilitarDatos($event)"> Check para habilitar
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

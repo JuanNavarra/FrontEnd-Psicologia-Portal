@@ -5,4 +5,5 @@ export interface IListEntrada {
     titulo: string;
     rutaVideo: string;
     creador: string;
+    rutaaudio: string;
 }

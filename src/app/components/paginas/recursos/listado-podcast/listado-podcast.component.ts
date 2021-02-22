@@ -1,81 +1,57 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { IYoutube } from 'src/app/models/iyoutube';
-import { YoutubeService } from 'src/app/services/paginas/youtube.service';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { faTrash, faEdit, faArrowUp } from '@fortawesome/free-solid-svg-icons';
+import { Subscription } from 'rxjs';
+import { IPodcast } from 'src/app/models/ipodcast';
+import { PodcastService } from 'src/app/services/paginas/podcast.service';
 import Swal from 'sweetalert2/dist/sweetalert2.js';
 import { ToastrService } from 'ngx-toastr';
-import { VideoYoutubeDetalleComponent } from '../video-youtube-detalle/video-youtube-detalle.component';
+import { PodcastDetalleComponent } from '../podcast-detalle/podcast-detalle.component';
 
 @Component({
-  selector: 'listadoYoutube',
-  templateUrl: './listado-youtube.component.html',
-  styleUrls: ['./listado-youtube.component.css'],
+  selector: 'listadoPodcast',
+  templateUrl: './listado-podcast.component.html',
+  styleUrls: ['./listado-podcast.component.css'],
 })
-export class ListadoYoutubeComponent implements OnInit {
-  entradas: IYoutube[] = [];
-  entrada: IYoutube;
+export class ListadoPodcastComponent implements OnInit, OnDestroy {
+  entradas: IPodcast[] = [];
+  entrada: IPodcast;
   public page: number;
   faTrash = faTrash;
   faEdit = faEdit;
   faArrowUp = faArrowUp;
   subscription$: Subscription;
-  @ViewChild(VideoYoutubeDetalleComponent)
-  videoYoutube: VideoYoutubeDetalleComponent;
+  @ViewChild(PodcastDetalleComponent) podcast: PodcastDetalleComponent;
 
   constructor(
-    private youtubeService: YoutubeService,
+    private podcastService: PodcastService,
     private toast: ToastrService
   ) {}
 
   ngOnInit(): void {
-    this.youtubeService.obtenerEntradas().subscribe((data) => {
-      this.entradas = data.body;
-    });
+    this.subscription$ = this.podcastService
+      .obtenerEntradas()
+      .subscribe((data) => {
+        this.entradas = data.body;
+      });
   }
 
   /**
    * Agrega a la lista de post un post que viene
    * del componente crear-post
    */
-  agregarListaPost(entrada: IYoutube): void {
+  agregarListaPost(entrada: IPodcast): void {
     this.entradas.unshift(entrada);
   }
 
   /**
-   * Actualiza la fila de un video de youtube
-   * @param entrada
-   */
-  actualizarListaPost(entrada: IYoutube): void {
-    const fila = this.entradas.find((f) => f.slug == entrada.slug);
-    fila.titulo = entrada.titulo;
-    fila.rutaVideo = entrada.rutaVideo;
-    fila.descripcion = entrada.descripcion;
-  }
-
-  /**
-   * Muestra el video de seleccionado para editarlo
+   * Habilita un podcast
    * @param slug
    * @param $event
    */
-  mostrarVideo(slug: string, $event: Event) {
-    this.subscription$ = this.youtubeService
-      .mostrarVideoYoutube(slug)
-      .subscribe((data) => {
-        this.entrada = data.body;
-        this.videoYoutube.mostrarContenido(this.entrada);
-      });
-  }
-
-  /**
-   * Habilita un video de youtube
-   * @param slug
-   * @param $event
-   */
-  habilitarVideo(slug: string, $event: Event): void {
+  habilitarPodcast(slug: string, $event: Event): void {
     $event.preventDefault();
-    this.subscription$ = this.youtubeService
-      .cambiarEstadoEntradaVideo(slug)
+    this.subscription$ = this.podcastService
+      .cambiarEstadoEntradaPodcast(slug)
       .subscribe(
         (data) => {
           if (data.status == 200 || data.status == 201) {
@@ -83,7 +59,7 @@ export class ListadoYoutubeComponent implements OnInit {
             fila.estado = true;
             Swal.fire(
               'Habilitado',
-              'El video con slug ' + slug + ' ha sido habilitado nuevamente',
+              'El Podcast con slug ' + slug + ' ha sido habilitado nuevamente',
               'success'
             );
           }
@@ -95,14 +71,14 @@ export class ListadoYoutubeComponent implements OnInit {
   }
 
   /**
-   * Elimina o inhabilita un video
+   * Elimina o inhabilita un podcast
    * @param slug
    * @param $event
    */
-  eliminarVideo(slug: string, $event: Event): void {
+  eliminarPodcast(slug: string, $event: Event): void {
     const estadoBtn = this.entradas.find((f) => f.slug == slug).estado;
     Swal.fire({
-      title: '¿Deseas eliminar el video o inhabilitarlo?',
+      title: '¿Deseas eliminar el Podcast o inhabilitarlo?',
       icon: 'question',
       showCancelButton: true,
       cancelButtonText: 'Eliminar',
@@ -114,14 +90,14 @@ export class ListadoYoutubeComponent implements OnInit {
       showCloseButton: true,
     }).then((result) => {
       if (result.dismiss == 'cancel' && !result.isConfirmed) {
-        this.subscription$ = this.youtubeService
-          .eliminarEntradaVideo(slug)
+        this.subscription$ = this.podcastService
+          .eliminarEntradaPodcast(slug)
           .subscribe(
             (data) => {
               if (data.status == 200 || data.status == 201) {
                 Swal.fire(
                   'Elimiado',
-                  'El video con slug ' + slug + ' esta eliminado',
+                  'El Podcast con slug ' + slug + ' esta eliminado',
                   'success'
                 );
                 this.entradas = this.entradas.filter((f) => f.slug != slug);
@@ -132,8 +108,8 @@ export class ListadoYoutubeComponent implements OnInit {
             }
           );
       } else if (result.isConfirmed && result.value) {
-        this.subscription$ = this.youtubeService
-          .cambiarEstadoEntradaVideo(slug)
+        this.subscription$ = this.podcastService
+          .cambiarEstadoEntradaPodcast(slug)
           .subscribe(
             (data) => {
               if (data.status == 201 || data.status == 200) {
@@ -141,7 +117,7 @@ export class ListadoYoutubeComponent implements OnInit {
                 fila.estado = false;
                 Swal.fire(
                   'Inhabilitado',
-                  'El video con slug ' + slug + ' esta inhabilitado',
+                  'El Podcast con slug ' + slug + ' esta inhabilitado',
                   'success'
                 );
               }
@@ -155,16 +131,46 @@ export class ListadoYoutubeComponent implements OnInit {
   }
 
   /**
-   * Metodo para desubscribir
+   * Muestra el podcast de seleccionado para editarlo
+   * @param slug
+   * @param $event
    */
-  ngOnDestroy(): void {
+  mostrarPodcast(slug: string, $event: Event) {
+    this.subscription$ = this.podcastService
+      .mostrarPodcast(slug)
+      .subscribe((data) => {
+        this.entrada = data.body;
+        this.podcast.mostrarContenido(this.entrada);
+      });
+  }
+
+  /**
+   * Crea una ruta para las audios
+   * @param serverPath
+   */
+  public createAudioPath = (serverPath: string) => {
+    return `https://localhost:44329/${serverPath}`;
+  };
+
+  /**
+   * Metodo para quitar una subscripcion
+   */
+  ngOnDestroy() {
     if (this.subscription$) {
       this.subscription$.unsubscribe();
     }
   }
 
-  reproducir() {
-    const audio = new Audio('assets/Go.mp3');
-    audio.play();
+  /**
+   * Actualiza la fila de un video de youtube
+   * @param entrada
+   */
+  actualizarListaPost(entrada: IPodcast): void {
+    const fila = this.entradas.find((f) => f.slug == entrada.slug);
+    fila.titulo = entrada.titulo;
+    fila.rutaaudio = entrada.rutaaudio;
+
+    console.log(fila);
+    console.log(this.entradas);
   }
 }

@@ -5,12 +5,12 @@
                 <div class="card card-info">
                     <div class="card-header">
                         <button type="button" class="btn btn-primary float-right d-none d-sm-inline-block"
-                            data-toggle="modal" data-target="#nuevoYoutube">
+                            data-toggle="modal" data-target="#nuevoPodcast">
                             +
                         </button>
                     </div>
-                    <listadoYoutube #listadoYoutube></listadoYoutube>
-                    <app-crear-youtube (entrada)="listadoYoutube.agregarListaPost($event)"></app-crear-youtube>
+                    <listadoPodcast #listadoPodcast></listadoPodcast>
+                    <app-crear-podcast (entrada)="listadoPodcast.agregarListaPost($event)"></app-crear-podcast>
                 </div>
             </div>
         </div>
