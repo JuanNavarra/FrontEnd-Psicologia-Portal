@@ -11,7 +11,7 @@ import { DataService } from './data.service';
 })
 export class UsuarioService {
 
-  private url: string = "https://localhost:44329/api/Usuario/";
+  private url: string = "http://localhost:8090/api/Usuario/";
 
   constructor(
     private dataService: DataService

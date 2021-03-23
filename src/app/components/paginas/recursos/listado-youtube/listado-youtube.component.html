@@ -13,7 +13,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let entrada of entradas | paginate: { itemsPerPage: 5, currentPage: page } let i = index;"
+            <tr *ngFor="let entrada of entradas | paginate: { itemsPerPage: 3, currentPage: page } let i = index;"
                 [ngClass]="{inhabilitado: !entrada.estado}">
                 <td>{{i + 1}}</td>
                 <td>{{entrada.slug}}</td>

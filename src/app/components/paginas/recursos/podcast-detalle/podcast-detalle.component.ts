@@ -61,6 +61,7 @@ export class PodcastDetalleComponent implements OnInit {
       categoriaId: null,
       titulo: null,
     };
+    this.builderForm();
   }
 
   ngOnInit(): void {
@@ -80,7 +81,6 @@ export class PodcastDetalleComponent implements OnInit {
       allowSearchFilter: true,
     };
 
-    this.builderForm();
   }
 
   /**
@@ -138,8 +138,8 @@ export class PodcastDetalleComponent implements OnInit {
         .get('creador')
         .setValue(this.securityService.getDecodedAccessToken().User);
       this.formEntrada
-        .get('idcategoria')
-        .setValue(parseInt(this.formEntrada.value.idcategoria));
+        .get('categoriaId')
+        .setValue(parseInt(this.formEntrada.value.categoriaId));
       this.formEntrada.get('slug').setValue(this.entradaPodcast.slug);
       var formData: FormData = new FormData();
       formData.append('audio', $event.target[1].files[0]);

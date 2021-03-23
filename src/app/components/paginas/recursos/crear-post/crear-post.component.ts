@@ -92,7 +92,7 @@ export class CrearPostComponent implements OnInit, OnDestroy {
       ImagenPostFile: [null, [Validators.required]],
       idcategoria: [null, [Validators.required]],
       descripcion: [null, [Validators.required]],
-      creador: [null, [Validators.required]],
+      creador: [null],
     });
   }
 
@@ -138,18 +138,25 @@ export class CrearPostComponent implements OnInit, OnDestroy {
       this.securityService.logOff();
       this.route.navigate(['']);
     }
-    this.formEntrada
-      .get('creador')
-      .setValue(this.securityService.getDecodedAccessToken().User);
-    this.formEntrada
-      .get('idcategoria')
-      .setValue(parseInt(this.formEntrada.value.idcategoria));
     if (this.formEntrada.valid) {
       this.subscription$ = this.blogService
         .guardarImagePost(formData)
         .subscribe(
           (data) => {
             if (data.status == 200 || data.status == 201) {
+              this.formEntrada.setValue({
+                idcategoria: parseInt(this.formEntrada.value.idcategoria),
+                creador: this.securityService.getDecodedAccessToken().User,
+                keyWords: this.formEntrada.value.keyWords,
+                titulo: this.formEntrada.value.titulo,
+                slug: this.formEntrada.value.slug,
+                subTitulo: this.formEntrada.value.subTitulo,
+                autorCita: this.formEntrada.value.autorCita,
+                cita: this.formEntrada.value.cita,
+                descripcion: this.formEntrada.value.descripcion,
+                citaCheck:true,
+                ImagenPostFile: ''
+              });
               this.subscription$ = this.blogService
                 .guardarPost(this.formEntrada.value, data.body.toString())
                 .subscribe(
@@ -190,16 +197,6 @@ export class CrearPostComponent implements OnInit, OnDestroy {
       this.toast.error('error');
       this.formEntrada.markAllAsTouched();
     }
-  }
-
-  /**
-   * Castea un objeto del formgroup
-   * @param data
-   */
-  private castToNumber(data: AbstractControl): void {
-    data.valueChanges
-      .pipe(distinct())
-      .subscribe((value) => data.setValue(+value || 0));
   }
 
   /**

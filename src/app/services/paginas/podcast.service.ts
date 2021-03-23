@@ -11,7 +11,7 @@ import { DataService } from '../data.service';
 })
 export class PodcastService {
 
-	private url: string = "https://localhost:44329/api/podcast/";
+	private url: string = "http://localhost:8090/api/podcast/";
 	private estado: boolean = false;
 
 	constructor(private dataService: DataService) { }

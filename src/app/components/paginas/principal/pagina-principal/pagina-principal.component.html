@@ -1,0 +1,134 @@
+<div class="content-wrapper">
+    <section class="content">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">Crear contenido seccion</h3>
+                    </div>
+                    <form novalidate [formGroup]="formEntrada" (ngSubmit)="guardarContenido($event)">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Imagen principal<small><br>Se reflejara al inicio de la pagina de
+                                                home</small></label>
+                                        <div class="input-group">
+                                            <div class="custom-file">
+                                                <input type="file" (change)="uploadFile($event.target.files)"
+                                                    formControlName="ImagenPostFile" class="custom-file-input">
+                                                <label class="custom-file-label" #labelImport for="ImagenPostFile"><i
+                                                        class="fas fa-search"></i>ej:
+                                                    imagen1.png</label>
+                                            </div>
+                                        </div>
+                                        <div
+                                            *ngIf="formEntrada.get('ImagenPostFile').errors && formEntrada.get('ImagenPostFile').touched">
+                                            <p *ngIf="formEntrada.get('ImagenPostFile').hasError('required')"
+                                                class="error">
+                                                Este campo es requerido.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Texto imagen<small><br>Texto incrustado en la imagen principal de
+                                                home</small></label>
+                                        <input type="text" class="form-control" formControlName="texto">
+                                        <div
+                                            *ngIf="formEntrada.get('texto').errors && formEntrada.get('texto').touched">
+                                            <p *ngIf="formEntrada.get('texto').hasError('required')" class="error">
+                                                Este campo es requerido.
+                                            </p>
+                                            <p *ngIf="formEntrada.get('texto').hasError('maxLength')" class="error">
+                                                Acepta maximo 12 caracteres.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Descripcion<small><br>Texto informativo que refleja de que se trata el
+                                                blog o cualquier otra descripcion principal</small></label>
+                                        <quill-editor [placeholder]="'Empieza a redactar'"
+                                            formControlName="descripcion">
+                                        </quill-editor>
+                                        <div
+                                            *ngIf="formEntrada.get('descripcion').errors && formEntrada.get('descripcion').touched">
+                                            <p *ngIf="formEntrada.get('descripcion').hasError('required')"
+                                                class="error">
+                                                Este campo es requerido.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Guardar contenido</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card card-info">
+                    <div class="card-header">
+                        <h3 class="card-title">Listado de correos al NewsLetter</h3>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>texto</th>
+                                    <th>Titulo</th>
+                                    <th>Audio</th>
+                                    <th>Creador</th>
+                                    <th>Accion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-info">
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th style="width: 20%">Imagen</th>
+                                    <th>texto</th>
+                                    <th>Descripcion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let seccion of secciones">
+                                    <td>
+                                        <img *ngIf="seccion.rutaImagen != null"
+                                            [src]="createImgPath(seccion.rutaImagen)" class="img-fluid">
+                                    </td>
+                                    <td [innerHTML]="seccion.descripcion">{{seccion.descripcion}}</td>
+                                    <td>{{seccion.texto}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>

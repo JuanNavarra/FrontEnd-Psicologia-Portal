@@ -13,7 +13,7 @@ import { DataService } from '../data.service';
   providedIn: 'root',
 })
 export class BlogService {
-  private url: string = 'https://localhost:44329/api/Blog/';
+  private url: string = 'http://localhost:8090/api/Blog/';
   private estado: boolean = false;
 
   constructor(private dataService: DataService) {}

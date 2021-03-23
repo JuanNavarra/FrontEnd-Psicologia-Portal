@@ -11,7 +11,7 @@ import { DataService } from '../data.service';
 })
 export class YoutubeService {
 
-	private url: string = "https://localhost:44329/api/Youtube/";
+	private url: string = "http://localhost:8090/api/Youtube/";
 	private estado: boolean = false;
 
 	constructor(private dataService: DataService) { }

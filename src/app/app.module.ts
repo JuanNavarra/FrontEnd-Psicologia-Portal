@@ -30,6 +30,7 @@ import { ListadoPodcastComponent } from './components/paginas/recursos/listado-p
 import { CrearPodcastComponent } from './components/paginas/recursos/crear-podcast/crear-podcast.component';
 import { PodcastDetalleComponent } from './components/paginas/recursos/podcast-detalle/podcast-detalle.component';
 import { CrearCategoriaComponent } from './components/paginas/recursos/crear-categoria/crear-categoria.component';
+import { PaginaPrincipalComponent } from './components/paginas/principal/pagina-principal/pagina-principal.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { CrearCategoriaComponent } from './components/paginas/recursos/crear-cat
     CrearPodcastComponent,
     PodcastDetalleComponent,
     CrearCategoriaComponent,
+    PaginaPrincipalComponent,
   ],
   imports: [
     BrowserModule,
